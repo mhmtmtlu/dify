@@ -42,7 +42,6 @@ import cn from '@/utils/classnames'
 import { useGetAppAccessMode, useGetUserCanAccessApp } from '@/service/access-control'
 import { AccessMode } from '@/models/access-control'
 import { useGlobalPublicStore } from '@/context/global-public-context'
-import useDocumentTitle from '@/hooks/use-document-title'
 
 const GROUP_SIZE = 5 // to avoid RPM(Request per minute) limit. The group task finished then the next group.
 enum TaskStatus {
@@ -437,7 +436,14 @@ const TextGeneration: FC<IMainProps> = ({
   }, [])
 
   // Can Use metadata(https://beta.nextjs.org/docs/api-reference/metadata) to set title. But it only works in server side client.
-  useDocumentTitle(siteInfo?.title || t('share.generation.title'))
+  useEffect(() => {
+    if (siteInfo?.title) {
+      if (canReplaceLogo)
+        document.title = `${siteInfo.title}`
+      else
+        document.title = `${siteInfo.title} - Powered by Genomsoft`
+    }
+  }, [siteInfo?.title, canReplaceLogo])
 
   useAppFavicon({
     enable: !isInstalledApp,
@@ -640,11 +646,16 @@ const TextGeneration: FC<IMainProps> = ({
             isPC ? 'px-8' : 'px-4',
             !isPC && resultExisted && 'rounded-b-2xl border-b-[0.5px] border-divider-regular',
           )}>
-            <div className='system-2xs-medium-uppercase text-text-tertiary'>{t('share.chat.poweredBy')}</div>
-            {systemFeatures.branding.enabled ? (
-              <img src={systemFeatures.branding.login_page_logo} alt='logo' className='block h-5 w-auto' />
-            ) : (
+            {!customConfig?.replace_webapp_logo && (
+              <a href="https://genomsoft.com.tr" target="_blank">
               <DifyLogo size='small' />
+              </a>
+            )}
+            <div className='system-2xs-medium text-text-tertiary'>{t('share.chat.poweredBy')}</div>
+            {customConfig?.replace_webapp_logo && (
+              <a href="https://genomsoft.com.tr" target="_blank">
+              <img src={customConfig?.replace_webapp_logo} alt='logo' className='block h-5 w-auto' />
+              </a>
             )}
           </div>
         )}

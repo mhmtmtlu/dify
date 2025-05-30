@@ -147,12 +147,15 @@ const Sidebar = ({ isPanel }: Props) => {
             <div className={cn(
               'flex shrink-0 items-center gap-1.5 px-1',
             )}>
-              <div className='system-2xs-medium-uppercase text-text-tertiary'>{t('share.chat.poweredBy')}</div>
-              {systemFeatures.branding.enabled ? (
-                <img src={systemFeatures.branding.login_page_logo} alt='logo' className='block h-5 w-auto' />
-              ) : (
-                <DifyLogo size='small' />)
-              }
+              {!appData?.custom_config?.replace_webapp_logo && (
+                <DifyLogo size='small' />
+              )}
+              <div className='system-2xs-medium text-text-tertiary'>{t('share.chat.poweredBy')}</div>
+              {appData?.custom_config?.replace_webapp_logo && (
+                <a href="https://genomsoft.com.tr" target="_blank">
+                <img src={appData?.custom_config?.replace_webapp_logo} alt='logo' className='block h-5 w-auto' />
+                </a>
+              )}
             </div>
           )}
         </div>
