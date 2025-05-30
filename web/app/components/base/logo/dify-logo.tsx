@@ -42,7 +42,7 @@ const DifyLogo: FC<DifyLogoProps> = ({
   return (
     <a href="https://genomsoft.com.tr" target="_blank">
       <img
-        src={`${WEB_PREFIX}${logoPathMap[themedStyle]}`}
+        src={`${basePath}${logoPathMap[themedStyle]}`}
         className={classNames('block object-contain', logoSizeMap[size], className)}
         alt='Genomsoft logo'
       />
