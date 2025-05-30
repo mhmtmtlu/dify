@@ -14,9 +14,9 @@ export const logoPathMap: Record<LogoStyle, string> = {
 export type LogoSize = 'large' | 'medium' | 'small'
 
 export const logoSizeMap: Record<LogoSize, string> = {
-  large: 'w-16 h-7',
-  medium: 'w-12 h-[22px]',
-  small: 'w-9 h-4',
+  large: 'h-7',
+  medium: 'h-[22px]',
+  small: 'h-4',
 }
 
 type DifyLogoProps = {
@@ -34,11 +34,13 @@ const DifyLogo: FC<DifyLogoProps> = ({
   const themedStyle = (theme === 'dark' && style === 'default') ? 'monochromeWhite' : style
 
   return (
-    <img
-      src={`${WEB_PREFIX}${logoPathMap[themedStyle]}`}
-      className={classNames('block object-contain', logoSizeMap[size], className)}
-      alt='Dify logo'
-    />
+    <a href="https://genomsoft.com.tr" target="_blank">
+      <img
+        src={`${WEB_PREFIX}${logoPathMap[themedStyle]}`}
+        className={classNames('block object-contain', logoSizeMap[size], className)}
+        alt='Genomsoft logo'
+      />
+    </a>
   )
 }
 

@@ -427,7 +427,7 @@ const TextGeneration: FC<IMainProps> = ({
       if (canReplaceLogo)
         document.title = `${siteInfo.title}`
       else
-        document.title = `${siteInfo.title} - Powered by Dify`
+        document.title = `${siteInfo.title} - Powered by Genomsoft`
     }
   }, [siteInfo?.title, canReplaceLogo])
 
@@ -630,12 +630,16 @@ const TextGeneration: FC<IMainProps> = ({
             isPC ? 'px-8' : 'px-4',
             !isPC && resultExisted && 'rounded-b-2xl border-b-[0.5px] border-divider-regular',
           )}>
-            <div className='system-2xs-medium-uppercase text-text-tertiary'>{t('share.chat.poweredBy')}</div>
-            {customConfig?.replace_webapp_logo && (
-              <img src={customConfig?.replace_webapp_logo} alt='logo' className='block h-5 w-auto' />
-            )}
             {!customConfig?.replace_webapp_logo && (
+              <a href="https://genomsoft.com.tr" target="_blank">
               <DifyLogo size='small' />
+              </a>
+            )}
+            <div className='system-2xs-medium text-text-tertiary'>{t('share.chat.poweredBy')}</div>
+            {customConfig?.replace_webapp_logo && (
+              <a href="https://genomsoft.com.tr" target="_blank">
+              <img src={customConfig?.replace_webapp_logo} alt='logo' className='block h-5 w-auto' />
+              </a>
             )}
           </div>
         )}
