@@ -40,7 +40,7 @@ const translation = {
     maxTreeDepth: 'Her dal için maksimum {{depth}} düğüm limiti',
     needEndNode: 'Son blok eklenmelidir',
     needAnswerNode: 'Yanıt bloğu eklenmelidir',
-    workflowProcess: 'Workflow Süreci',
+    workflowProcess: '',
     notRunning: 'Henüz çalıştırılmadı',
     previewPlaceholder: 'Sohbet Robotunu hata ayıklamak için aşağıdaki kutuya içerik girin',
     effectVarConfirm: {

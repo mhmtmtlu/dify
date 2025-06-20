@@ -12,7 +12,7 @@
   const buttonId = "dify-chatbot-bubble-button";
   const iframeId = "dify-chatbot-bubble-window";
   const config = window[configKey];
-  let isExpanded = false;
+  let isExpanded = true;
 
   // SVG icons for open and close states
   const svgIcons = `<svg id="openIcon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -22,7 +22,6 @@
       <path d="M18 18L6 6M6 18L18 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
     `;
-
 
   const originalIframeStyleText = `
     position: fixed;
@@ -141,8 +140,8 @@
       iframe.title = "dify chatbot bubble window";
       iframe.id = iframeId;
       iframe.src = iframeUrl;
-      iframe.style.cssText = originalIframeStyleText;
-
+      iframe.style.cssText = expandedIframeStyleText;
+      iframe.isExpanded = true;
       return iframe;
     }
 
@@ -243,7 +242,7 @@
 
       containerDiv.id = buttonId;
 
-      // Add styles for the button
+      // Add styles for the button including animations
       const styleSheet = document.createElement("style");
       document.head.appendChild(styleSheet);
       styleSheet.sheet.insertRule(`
@@ -262,6 +261,34 @@
           z-index: 2147483647;
         }
       `);
+      // Add shake animation
+      styleSheet.sheet.insertRule(`
+        @keyframes shake {
+          0% { transform: translate(1px, 1px) rotate(0deg); }
+        10% { transform: translate(-1px, -3px) rotate(-2deg); }
+        20% { transform: translate(-4px, 0px) rotate(2deg); }
+        30% { transform: translate(4px, 3px) rotate(0deg); }
+        40% { transform: translate(1px, -1px) rotate(2deg); }
+        50% { transform: translate(-1px, 3px) rotate(-2deg); }
+        60% { transform: translate(-4px, 1px) rotate(0deg); }
+        70% { transform: translate(4px, 1px) rotate(-2deg); }
+        80% { transform: translate(-1px, -1px) rotate(2deg); }
+        90% { transform: translate(1px, 3px) rotate(0deg); }
+        100% { transform: translate(1px, -3px) rotate(-2deg); }
+        }
+      `);
+      
+       styleSheet.sheet.insertRule(`
+        @keyframes heartbeat {
+            0% { transform: scale(1);}
+            14% { transform: scale(1.3);}
+            28% {transform: scale(1); }
+            42% { transform: scale(1.3);}
+            70% { transform: scale(1); }
+        }
+      `);
+
+    
 
       // Create display div for the button icon
       const displayDiv = document.createElement("div");
@@ -270,7 +297,7 @@
       displayDiv.innerHTML = svgIcons;
       containerDiv.appendChild(displayDiv);
       document.body.appendChild(containerDiv);
-
+      setSvgIcon("open");
       // Add click event listener to toggle chatbot
       containerDiv.addEventListener("click", handleClick);
       // Add touch event listener
@@ -411,12 +438,34 @@
   }
 
   function setSvgIcon(type = "open") {
+    const openIcon = document.getElementById("openIcon");
+    const closeIcon = document.getElementById("closeIcon");
+    const button = document.getElementById(buttonId);
+
     if (type === "open") {
-      document.getElementById("openIcon").style.display = "block";
-      document.getElementById("closeIcon").style.display = "none";
+      openIcon.style.display = "block";
+      closeIcon.style.display = "none";
+      // Apply random animation (shake or beat)
+      const animations = ["shake", "heartbeat"];
+      const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
+      button.style.animation = `${randomAnimation} 2s linear infinite`;
+      // Restart animation periodically
+      button.style.animationIterationCount = "1";
+      const restartAnimation = () => {
+        if (openIcon.style.display === "block" && !button.style.display.includes("none")) {
+          button.style.animation = "none";
+          void button.offsetWidth; // Trigger reflow
+          const newRandomAnimation = animations[Math.floor(Math.random() * animations.length)];
+          button.style.animation = `${newRandomAnimation} 2s linear infinite`;
+          setTimeout(restartAnimation, 3000);
+        }
+      };
+      setTimeout(restartAnimation, 3000);
     } else {
-      document.getElementById("openIcon").style.display = "none";
-      document.getElementById("closeIcon").style.display = "block";
+      openIcon.style.display = "none";
+      closeIcon.style.display = "block";
+      // Remove animation when chat is open
+      button.style.animation = "none";
     }
   }
 

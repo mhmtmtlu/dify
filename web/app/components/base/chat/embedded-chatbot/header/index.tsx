@@ -41,7 +41,7 @@ const Header: FC<IHeaderProps> = ({
   const isIframe = isClient ? window.self !== window.top : false
   const [parentOrigin, setParentOrigin] = useState('')
   const [showToggleExpandButton, setShowToggleExpandButton] = useState(false)
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(true)
 
   const handleMessageReceived = useCallback((event: MessageEvent) => {
     let currentParentOrigin = parentOrigin
