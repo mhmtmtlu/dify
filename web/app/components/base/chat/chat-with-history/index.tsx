@@ -1,3 +1,4 @@
+'use client'
 import type { FC } from 'react'
 import {
   useEffect,
@@ -29,10 +30,7 @@ const ChatWithHistory: FC<ChatWithHistoryProps> = ({
   className,
 }) => {
   const {
-    userCanAccess,
-    appInfoError,
     appData,
-    appInfoLoading,
     appChatListDataLoading,
     chatShouldReloadKey,
     isMobile,
@@ -56,20 +54,6 @@ const ChatWithHistory: FC<ChatWithHistoryProps> = ({
   }, [site, customConfig, themeBuilder])
 
   useDocumentTitle(site?.title || 'Chat')
-
-  if (appInfoLoading) {
-    return (
-      <Loading type='app' />
-    )
-  }
-  if (!userCanAccess)
-    return <AppUnavailable code={403} unknownReason='no permission.' />
-
-  if (appInfoError) {
-    return (
-      <AppUnavailable />
-    )
-  }
 
   return (
     <div className={cn(
@@ -128,10 +112,6 @@ const ChatWithHistoryWrap: FC<ChatWithHistoryWrapProps> = ({
   const themeBuilder = useThemeContext()
 
   const {
-    appInfoError,
-    appInfoLoading,
-    accessMode,
-    userCanAccess,
     appData,
     appParams,
     appMeta,
@@ -168,15 +148,12 @@ const ChatWithHistoryWrap: FC<ChatWithHistoryWrapProps> = ({
     currentConversationInputs,
     setCurrentConversationInputs,
     allInputsHidden,
+    initUserVariables,
   } = useChatWithHistory(installedAppInfo)
 
   return (
     <ChatWithHistoryContext.Provider value={{
-      appInfoError,
-      appInfoLoading,
       appData,
-      accessMode,
-      userCanAccess,
       appParams,
       appMeta,
       appChatListDataLoading,
@@ -214,6 +191,7 @@ const ChatWithHistoryWrap: FC<ChatWithHistoryWrapProps> = ({
       currentConversationInputs,
       setCurrentConversationInputs,
       allInputsHidden,
+      initUserVariables,
     }}>
       <ChatWithHistory className={className} />
     </ChatWithHistoryContext.Provider>

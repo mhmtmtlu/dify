@@ -37,6 +37,7 @@
     height: 43.75rem;
     max-height: calc(100vh - 6rem);
     border: none;
+    border-radius: 1rem;
     z-index: 2147483640;
     overflow: hidden;
     user-select: none;
@@ -61,6 +62,7 @@
     height: 88%;
     max-height: calc(100vh - 6rem);
     border: none;
+    border-radius: 1rem;
     z-index: 2147483640;
     overflow: hidden;
     user-select: none;
@@ -111,9 +113,21 @@
       return compressedSystemVariables;
     }
 
+    async function getCompressedUserVariablesFromConfig() {
+      const userVariables = config?.userVariables || {};
+      const compressedUserVariables = {};
+      await Promise.all(
+        Object.entries(userVariables).map(async ([key, value]) => {
+          compressedUserVariables[`user.${key}`] = await compressAndEncodeBase64(value);
+        })
+      );
+      return compressedUserVariables;
+    }
+
     const params = new URLSearchParams({
       ...await getCompressedInputsFromConfig(),
-      ...await getCompressedSystemVariablesFromConfig()
+      ...await getCompressedSystemVariablesFromConfig(),
+      ...await getCompressedUserVariablesFromConfig()
     });
 
     const baseUrl =

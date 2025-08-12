@@ -19,8 +19,6 @@ import RenameModal from '@/app/components/base/chat/chat-with-history/sidebar/re
 import DifyLogo from '@/app/components/base/logo/dify-logo'
 import type { ConversationItem } from '@/models/share'
 import cn from '@/utils/classnames'
-import { AccessMode } from '@/models/access-control'
-import { useGlobalPublicStore } from '@/context/global-public-context'
 
 type Props = {
   isPanel?: boolean
@@ -30,7 +28,6 @@ const Sidebar = ({ isPanel }: Props) => {
   const { t } = useTranslation()
   const {
     isInstalledApp,
-    accessMode,
     appData,
     handleNewConversation,
     pinnedConversationList,
@@ -48,7 +45,6 @@ const Sidebar = ({ isPanel }: Props) => {
     isResponding,
   } = useChatWithHistoryContext()
   const isSidebarCollapsed = sidebarCollapseState
-  const systemFeatures = useGlobalPublicStore(s => s.systemFeatures)
   const [showConfirm, setShowConfirm] = useState<ConversationItem | null>(null)
   const [showRename, setShowRename] = useState<ConversationItem | null>(null)
 
@@ -140,7 +136,7 @@ const Sidebar = ({ isPanel }: Props) => {
         )}
       </div>
       <div className='flex shrink-0 items-center justify-between p-3'>
-        <MenuDropdown hideLogout={isInstalledApp || accessMode === AccessMode.PUBLIC} placement='top-start' data={appData?.site} />
+        <MenuDropdown hideLogout={isInstalledApp} placement='top-start' data={appData?.site} />
         {/* powered by */}
         <div className='shrink-0'>
           {!appData?.custom_config?.remove_webapp_brand && (
