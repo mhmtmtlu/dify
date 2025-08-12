@@ -448,7 +448,7 @@
       // Apply random animation (shake or beat)
       const animations = ["shake", "heartbeat"];
       const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
-      button.style.animation = `${randomAnimation} 2s linear infinite`;
+      button.style.animation = `${randomAnimation} 1.5s linear infinite`;
       // Restart animation periodically
       button.style.animationIterationCount = "1";
       const restartAnimation = () => {
@@ -456,7 +456,7 @@
           button.style.animation = "none";
           void button.offsetWidth; // Trigger reflow
           const newRandomAnimation = animations[Math.floor(Math.random() * animations.length)];
-          button.style.animation = `${newRandomAnimation} 2s linear infinite`;
+          button.style.animation = `${newRandomAnimation} 1.5s linear infinite`;
           setTimeout(restartAnimation, 3000);
         }
       };
